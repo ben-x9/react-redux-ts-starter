@@ -1,4 +1,5 @@
 import { MiddlewareAPI, Dispatch, Action } from "redux"
+import { defer } from "lodash"
 
 const dispatchMiddleware = <S, A extends Action>(store: MiddlewareAPI<S>) =>
                                                 (next: Dispatch<S>) =>
@@ -14,7 +15,7 @@ const dispatchMiddleware = <S, A extends Action>(store: MiddlewareAPI<S>) =>
   function dispatch(action: A) {
     actionQueue = actionQueue.concat([action])
     if (syncActivityFinished) {
-      flushQueue()
+      defer(() => flushQueue())
     }
   }
 
