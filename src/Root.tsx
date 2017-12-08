@@ -1,15 +1,48 @@
 import * as React from "react"
-import { Action, Type, increment, incrementAgain } from "actions"
-import { DispatchComponent } from "helpers"
-import Hello from "hello"
+import { Dispatcher, DispatchComponent } from "helpers"
+import * as Hello from "hello"
 
-export type State = typeof state
-export const state = {
+// STATE
+
+export type State = typeof init
+export const init = {
   count: 0,
-  countAgain: 0
+  countAgain: 0,
+  hello: Hello.init
 }
 
-export const update = (state: State, action: Action): State => {
+// UPDATE
+
+enum Type {
+  Increment = "Increment",
+  IncrementAgain = "IncrementAgain"
+}
+
+type Action = Dispatcher & (
+  Increment |
+  IncrementAgain
+)
+
+interface Increment {
+  type: Type.Increment
+  by: number
+}
+const increment = (by: number): Increment => ({
+  type: Type.Increment,
+  by
+})
+
+interface IncrementAgain {
+  type: Type.IncrementAgain
+  by: number
+}
+const incrementAgain = (by: number): IncrementAgain => ({
+  type: Type.IncrementAgain,
+  by
+})
+
+
+export const update = (state: State = init, action: Action): State => {
   switch (action.type) {
     case Type.Increment:
       action.dispatch(incrementAgain(3))
@@ -17,9 +50,13 @@ export const update = (state: State, action: Action): State => {
     case Type.IncrementAgain:
       return { ...state, countAgain: state.countAgain + action.by }
     default:
+      const hello = Hello.update(state.hello, action)
+      if (hello !== state.hello) return { ...state, hello }
       return state
   }
 }
+
+// VIEW
 
 require("./root.scss")
 
@@ -38,7 +75,11 @@ export default class Root extends DispatchComponent<State> {
 
   render() {
     return (
-      <Hello n1={this.props.count} n2={this.props.countAgain} />
+      <Hello.view
+        n1={this.props.count}
+        n2={this.props.countAgain}
+        state={this.props.hello}
+        dispatch={this.props.dispatch} />
     )
   }
 }

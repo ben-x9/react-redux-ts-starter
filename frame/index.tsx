@@ -7,7 +7,7 @@ import { createStore, applyMiddleware, compose } from "redux"
 import { AppContainer } from "react-hot-loader"
 import IndexComponent from "./IndexComponent"
 import dispatch from "./dispatchMiddleware"
-import { update, state } from "Root"
+import { update } from "Root"
 import {
   Dispatcher as $Dispatcher,
   DispatchComponent as $DispatchComponent
@@ -17,7 +17,7 @@ export type Dispanpmtcher = $Dispatcher
 export const DispatchComponent = $DispatchComponent
 
 // Initalize store
-const store = createStore(update, state)
+const store = createStore(update)
 type Store = typeof store
 interface Win {
   store: Store,
@@ -26,7 +26,7 @@ interface Win {
 const win = window as any as Win
 const composeEnhancers = win.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 win.store = win.store ||
-  createStore(update, state, composeEnhancers(applyMiddleware(dispatch)))
+  createStore(update, composeEnhancers(applyMiddleware(dispatch)))
 win.store.replaceReducer(update)
 
 const render = () => {

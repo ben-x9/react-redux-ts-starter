@@ -1,6 +1,5 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { Type, Action, Increment } from "actions"
 import Root, { State } from "Root"
 import { DispatchComponent } from "./helpers"
 
