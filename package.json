@@ -9,13 +9,6 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.88",
-    "@types/node": "^8.0.54",
-    "@types/react": "^16.0.27",
-    "@types/react-dom": "^16.0.3",
-    "@types/react-hot-loader": "^3.0.5",
-    "@types/react-redux": "^5.0.14",
-    "@types/redux": "^3.6.0",
     "lodash": "^4.17.4",
     "moize": "^4.0.3",
     "normalize.css": "^7.0.0",
@@ -26,6 +19,13 @@
     "redux": "^3.7.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.88",
+    "@types/node": "^8.0.54",
+    "@types/react": "^16.0.27",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-hot-loader": "^3.0.5",
+    "@types/react-redux": "^5.0.14",
+    "@types/redux": "^3.6.0",
     "compression-webpack-plugin": "^1.0.1",
     "css-loader": "^0.28.7",
     "node-sass": "^4.7.2",
