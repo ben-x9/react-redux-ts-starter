@@ -9,7 +9,7 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
+    "lodash-es": "^4.17.4",
     "moize": "^4.0.3",
     "normalize.css": "^7.0.0",
     "react": "^16.2.0",
