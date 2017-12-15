@@ -1,57 +1,37 @@
 import * as React from "react"
 import { connect } from "react-redux"
-import { Dispatcher, DispatchComponent } from "helpers"
-import * as Apples from "apples"
+import { Dispatcher, DispatchComponent, Dispatch } from "helpers"
+import * as Route from "route"
+import NotFound from "NotFound"
+import * as Home from "Home"
+import * as NextPage from "NextPage"
+
 
 // STATE
 
 export type State = typeof init
 export const init = {
-  count: 0,
-  countAgain: 0,
-  apples: Apples.init
+  route: Route.home as Route.T,
+  home: Home.init,
+  nextPage: NextPage.init
 }
 
 // UPDATE
 
-enum Type {
-  Increment = "Increment",
-  IncrementAgain = "IncrementAgain"
-}
+export type Action = Route.Action | Home.Action | NextPage.Action
 
-export type Action =
-  Increment |
-  IncrementAgain
-
-interface Increment {
-  type: Type.Increment
-  by: number
-}
-const increment = (by: number): Increment => ({
-  type: Type.Increment,
-  by
-})
-
-interface IncrementAgain {
-  type: Type.IncrementAgain
-  by: number
-}
-const incrementAgain = (by: number): IncrementAgain => ({
-  type: Type.IncrementAgain,
-  by
-})
-
-
-export const update = (state: State = init, action: Action & Dispatcher): State => {
+export const update = (state: State = init,
+                       action: Action & Dispatcher): State => {
+  Route.update(action as Route.Action)
   switch (action.type) {
-    case Type.Increment:
-      action.dispatch(incrementAgain(3))
-      return { ...state, count: state.count + action.by }
-    case Type.IncrementAgain:
-      return { ...state, countAgain: state.countAgain + action.by }
+    case Route.Type.Goto:
+      return { ...state, route: action.route }
     default:
-      const apples = Apples.update(state.apples, action)
-      if (apples !== state.apples) return { ...state, apples }
+      const home = Home.update(state.home, action as Home.Action & Dispatcher)
+      if (home !== state.home) return { ...state, home }
+      const nextPage = NextPage.update(state.nextPage,
+                                       action as NextPage.Action & Dispatcher)
+      if (nextPage !== state.nextPage) return { ...state, nextPage }
       return state
   }
 }
@@ -61,28 +41,26 @@ export const update = (state: State = init, action: Action & Dispatcher): State 
 require("./root.scss")
 
 class Root extends DispatchComponent<State> {
-  interval: number
+  unloadRouter: () => void
 
   componentWillMount() {
-    this.interval = window.setInterval(() => {
-      this.props.dispatch(increment(1))
-    }, 1000)
+    this.unloadRouter = Route.load(this.props.dispatch)
   }
 
   componentWillUnmount() {
-    window.clearInterval(this.interval)
+    this.unloadRouter()
   }
 
   render() {
-    return (
-      <div className="root">
-        <h1>Hello world!</h1>
-        <p>
-          Welcome to hot-reloading React written in TypeScript! {this.props.count} {this.props.countAgain}
-        </p>
-        <Apples.view {...this.props.apples} dispatch={this.props.dispatch} />
-      </div>
-    )
+    const props = this.props
+    switch (props.route.type) {
+      case Route.Type.NotFound:
+        return <NotFound />
+      case Route.Type.Home:
+        return <Home.view {...props.home} dispatch={props.dispatch} />
+      case Route.Type.NextPage:
+        return <NextPage.view {...props.nextPage} dispatch={props.dispatch}/>
+    }
   }
 }
 

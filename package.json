@@ -9,6 +9,8 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
+    "@types/history": "^4.6.2",
+    "history": "^4.7.2",
     "lodash-es": "^4.17.4",
     "moize": "^4.0.3",
     "normalize.css": "^7.0.0",

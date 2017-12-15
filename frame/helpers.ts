@@ -1,6 +1,8 @@
 import { PureComponent } from "react"
 import * as ReactRedux from "react-redux"
-import { Action } from "redux"
+import { Action as $Action } from "redux"
+
+export type Action = $Action
 
 export type Dispatch = ReactRedux.Dispatch<Action>
 
