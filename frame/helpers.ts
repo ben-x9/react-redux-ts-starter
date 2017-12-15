@@ -1,8 +1,10 @@
 import { PureComponent } from "react"
-import { Dispatch } from "react-redux"
+import * as ReactRedux from "react-redux"
 import { Action } from "redux"
 
-export type Dispatcher = {dispatch: Dispatch<Action>}
+export type Dispatch = ReactRedux.Dispatch<Action>
+
+export type Dispatcher = {dispatch: Dispatch}
 
 export class DispatchComponent<P> extends PureComponent<P & Dispatcher> {
   // dispatch(action: Action) {

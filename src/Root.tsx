@@ -1,6 +1,7 @@
 import * as React from "react"
+import { connect } from "react-redux"
 import { Dispatcher, DispatchComponent } from "helpers"
-import * as Hello from "hello"
+import * as Apples from "apples"
 
 // STATE
 
@@ -8,7 +9,7 @@ export type State = typeof init
 export const init = {
   count: 0,
   countAgain: 0,
-  hello: Hello.init
+  apples: Apples.init
 }
 
 // UPDATE
@@ -18,10 +19,9 @@ enum Type {
   IncrementAgain = "IncrementAgain"
 }
 
-type Action = Dispatcher & (
+export type Action =
   Increment |
   IncrementAgain
-)
 
 interface Increment {
   type: Type.Increment
@@ -42,7 +42,7 @@ const incrementAgain = (by: number): IncrementAgain => ({
 })
 
 
-export const update = (state: State = init, action: Action): State => {
+export const update = (state: State = init, action: Action & Dispatcher): State => {
   switch (action.type) {
     case Type.Increment:
       action.dispatch(incrementAgain(3))
@@ -50,8 +50,8 @@ export const update = (state: State = init, action: Action): State => {
     case Type.IncrementAgain:
       return { ...state, countAgain: state.countAgain + action.by }
     default:
-      const hello = Hello.update(state.hello, action)
-      if (hello !== state.hello) return { ...state, hello }
+      const apples = Apples.update(state.apples, action)
+      if (apples !== state.apples) return { ...state, apples }
       return state
   }
 }
@@ -60,7 +60,7 @@ export const update = (state: State = init, action: Action): State => {
 
 require("./root.scss")
 
-export default class Root extends DispatchComponent<State> {
+class Root extends DispatchComponent<State> {
   interval: number
 
   componentWillMount() {
@@ -75,11 +75,15 @@ export default class Root extends DispatchComponent<State> {
 
   render() {
     return (
-      <Hello.view
-        n1={this.props.count}
-        n2={this.props.countAgain}
-        state={this.props.hello}
-        dispatch={this.props.dispatch} />
+      <div className="root">
+        <h1>Hello world!</h1>
+        <p>
+          Welcome to hot-reloading React written in TypeScript! {this.props.count} {this.props.countAgain}
+        </p>
+        <Apples.view {...this.props.apples} dispatch={this.props.dispatch} />
+      </div>
     )
   }
 }
+
+export const view = connect((s: State) => s)(Root)

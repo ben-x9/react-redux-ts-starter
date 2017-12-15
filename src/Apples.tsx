@@ -9,7 +9,6 @@ export const init = {
 }
 type State = typeof init
 
-
 // UPDATE
 
 enum Type {
@@ -34,27 +33,14 @@ export const update = (state: State, action: Action): State => {
   }
 }
 
-
 // VIEW
 
-require("./hello.scss")
+require("./apples.scss")
 
-const alertYo = (what: string) => alert(what)
-
-type Props = Dispatcher & {
-  n1: number,
-  n2: number,
-  state: State
-}
-
-const Hello = ({ n1, n2, state, dispatch }: Props) =>
+const Apples = ({ numApples, dispatch }: State & Dispatcher) =>
   <div className="hello">
-    <h1>Hello world!</h1>
-    <p>
-      Welcome to hot-reloading React written in TypeScript! {n1} {n2}
-    </p>
-    <p>Number of apples: {state.numApples}</p>
+    <p>Number of apples: {numApples}</p>
     <button onClick={() => dispatch(addApple())}>Add Apple</button>
   </div>
 
-export const view = moize.reactSimple(Hello)
+export const view = moize.reactSimple(Apples)
