@@ -8,7 +8,7 @@ function absPath(filePath) {
 
 module.exports = {
   entry: {
-    bundle: ["react-hot-loader/patch", absPath("frame/index.tsx")],
+    bundle: ["react-hot-loader/patch", absPath("src/Root.tsx")],
   },
   output: {
     path: path.join(__dirname, "public"),

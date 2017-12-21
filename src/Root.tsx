@@ -1,7 +1,7 @@
 import * as React from "react"
 import { connect } from "react-redux"
 import { Dispatcher, DispatchComponent, Dispatch } from "helpers"
-import * as Route from "route"
+import * as Routes from "routes"
 import NotFound from "NotFound"
 import * as Home from "Home"
 import * as NextPage from "NextPage"
@@ -22,7 +22,7 @@ export type Action = Route.Action | Home.Action | NextPage.Action
 
 export const update = (state: State = init,
                        action: Action & Dispatcher): State => {
-  Route.update(action as Route.Action)
+  // Route.update(action as Route.Action)
   switch (action.type) {
     case Route.Type.Goto:
       return { ...state, route: action.route }
@@ -64,4 +64,10 @@ class Root extends DispatchComponent<State> {
   }
 }
 
-export const view = connect((s: State) => s)(Root)
+
+
+// Webpack Hot Module Replacement API
+const mod: Module = module as any as Module
+if (mod.hot) {
+  mod.hot.accept()
+}
