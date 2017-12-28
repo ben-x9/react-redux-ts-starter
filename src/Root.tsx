@@ -27,10 +27,9 @@ export const update = (state: State = init,
     case Route.Type.Goto:
       return { ...state, route: action.route }
     default:
-      const home = Home.update(state.home, action as Home.Action & Dispatcher)
+      const home = Home.update(state.home, action)
       if (home !== state.home) return { ...state, home }
-      const nextPage = NextPage.update(state.nextPage,
-                                       action as NextPage.Action & Dispatcher)
+      const nextPage = NextPage.update(state.nextPage, action)
       if (nextPage !== state.nextPage) return { ...state, nextPage }
       return state
   }
