@@ -7,7 +7,7 @@ import moize from "moize"
 export const init = {
   numApples: 0
 }
-type State = typeof init
+export type State = typeof init
 
 // UPDATE
 

@@ -23,7 +23,7 @@ export interface NextPage {
 }
 export const nextPage: NextPage = { type: Type.NextPage }
 
-const toUri = (route: T) => {
+export const toUri = (route: T) => {
   switch (route.type) {
     case Type.NotFound: return ""
     case Type.Home: return "/"
@@ -31,7 +31,7 @@ const toUri = (route: T) => {
   }
 }
 
-const fromUri = (uri: string): T => {
+export const fromUri = (uri: string): T => {
   if (uri === "/") {
     return home
   } else if (uri === "/nextpage") {
@@ -40,6 +40,3 @@ const fromUri = (uri: string): T => {
     return notFound
   }
 }
-
-// TODO: Separate frame/router and routes
-// TODO: Move frame to own library, pass Root component as parameter

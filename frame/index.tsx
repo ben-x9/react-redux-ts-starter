@@ -13,46 +13,52 @@ import {
   DispatchComponent as $DispatchComponent,
   Dispatcher
 } from "./helpers"
-import { PureComponent } from "react"
+import { RouteToUri, UriToRoute } from "Router"
+import { randomBytes } from "crypto"
 
-export type Dispanpmtcher = $Dispatcher
+export type Dispatcher = $Dispatcher
 export const DispatchComponent = $DispatchComponent
+
+export type Goto<Route> = Router.Action<Route>
+export type GotoType = Router.ActionType
+export const GotoType = Router.ActionType.Goto
+export const goto = Router.goto
 
 type StoreType = Dispatcher
 
 let RootElement: () => JSX.Element
-type UriToRoute<Route> = (uri: string) => Route
-// export let $uriToRoute: UriToRoute
-type RouteToUri<Route> = (route: Route) => string
-// export let $routeToUri: RouteToUri
 
 type Update<State, Action> = (state: State, action: Action) => State
 
-const load = function<State, Action extends Redux.Action, Route>(
-               RootElement: () => JSX.Element,
-               update: Update<State, Action>,
-               routeToUri: RouteToUri<Route>,
-               uriToRoute: UriToRoute<Route>) {
+export const load = function<State extends {},
+                      Action extends Redux.Action,
+                      Route>(
+    RootElement: (state: State) => JSX.Element/*  | $DispatchComponent<State> */,
+    update: Update<State, Action>,
+    routeToUri: RouteToUri<Route>,
+    uriToRoute: UriToRoute<Route>) {
 
-  const routerUpdate = Router.load()
+  // const routerUpdate = Router.load(routeToUri, uriToRoute)
 
   const wrappedUpdate = (state: State, action: Action) => {
-    Router.update(action as Router.Action<Route>)
-    update(state, action)
+    Router.update(action as any as Router.Action<Route>, routeToUri)
+    return update(state, action)
   }
 
   // Initalize store
-  let store = createStore(update)
-  type Store = typeof store
   const composeEnhancers =
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-  store = createStore(update, composeEnhancers(applyMiddleware(dispatch)))
+  let store = createStore(wrappedUpdate, composeEnhancers(applyMiddleware(dispatch)))
 
-  class Index extends DispatchComponent<State> {
+  class Index extends DispatchComponent<any> {
     unloadRouter: () => void
 
     componentWillMount() {
-      this.unloadRouter = Router.load(this.props.dispatch)
+      this.unloadRouter = Router.load(
+        this.props.dispatch,
+        routeToUri,
+        uriToRoute
+      )
     }
 
     componentWillUnmount() {
@@ -60,7 +66,7 @@ const load = function<State, Action extends Redux.Action, Route>(
     }
 
     render() {
-      return <RootElement />
+      return <RootElement {...this.props as State}/>
     }
   }
 
@@ -75,6 +81,6 @@ const load = function<State, Action extends Redux.Action, Route>(
     document.getElementById("root")
   )
 
-  return (update: Update<State>) => { store.replaceReducer(update) }
+  return (update: Update<State, Action>) => { store.replaceReducer(update) }
 }
 

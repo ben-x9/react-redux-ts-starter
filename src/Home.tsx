@@ -1,11 +1,16 @@
 import * as React from "react"
 import { Dispatcher, DispatchComponent } from "helpers"
 import * as Apples from "apples"
-import { goto, home, nextPage } from "route"
+import { home, nextPage, toUri, fromUri } from "route"
+import { goto } from "frame"
 
 // STATE
 
-export type State = typeof init
+export interface State {
+  count: number,
+  countAgain: number,
+  apples: Apples.State
+}
 export const init = {
   count: 0,
   countAgain: 0,
@@ -17,37 +22,36 @@ export type Action =
   Increment |
   IncrementAgain
 
-export enum Type {
+export enum ActionType {
   Increment = "Increment",
   IncrementAgain = "IncrementAgain"
 }
 
 interface Increment {
-  type: Type.Increment
+  type: ActionType.Increment
   by: number
 }
 const increment = (by: number): Increment => ({
-  type: Type.Increment,
+  type: ActionType.Increment,
   by
 })
 
 interface IncrementAgain {
-  type: Type.IncrementAgain
+  type: ActionType.IncrementAgain
   by: number
 }
 const incrementAgain = (by: number): IncrementAgain => ({
-  type: Type.IncrementAgain,
+  type: ActionType.IncrementAgain,
   by
 })
 
 
-export const update = (state: State = init,
-                       action: Action & Dispatcher): State => {
+export const update = (state: State = init, action: Action & Dispatcher): State => {
   switch (action.type) {
-    case Type.Increment:
+    case ActionType.Increment:
       action.dispatch(incrementAgain(3))
       return { ...state, count: state.count + action.by }
-    case Type.IncrementAgain:
+    case ActionType.IncrementAgain:
       return { ...state, countAgain: state.countAgain + action.by }
     default:
       const apples = Apples.update(state.apples, action)
@@ -60,7 +64,7 @@ export const update = (state: State = init,
 
 require("./root.scss")
 
-class Root extends DispatchComponent<State> {
+class Home extends DispatchComponent<State> {
   interval: number
 
   componentWillMount() {
@@ -90,4 +94,4 @@ class Root extends DispatchComponent<State> {
   }
 }
 
-export const view = Root
+export const view = Home
