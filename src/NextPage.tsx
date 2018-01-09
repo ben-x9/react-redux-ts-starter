@@ -1,5 +1,4 @@
-import * as React from "react"
-import { Dispatcher } from "helpers"
+import { React, Dispatcher } from "reactive-elm"
 import moize from "moize"
 
 // STATE

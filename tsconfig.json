@@ -37,19 +37,16 @@
     "paths": {
       "*": [
         "src/*",
-        "frame/*",
         "*"
       ]
     }
   },
   "include": [
     "src/**/*",
-    "frame/**/*",
     "typings/**/*"
   ],
   "exclude": [
-    "node_modules/**/*",
-    "protobuf/*"
+    "node_modules/**/*"
   ],
   "compileOnSave": false,
   "vscode": {

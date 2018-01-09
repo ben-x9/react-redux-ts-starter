@@ -1,24 +1,21 @@
-import * as React from "react"
-import { Dispatcher } from "helpers"
-import * as Route from "route"
+import { Route, RouteType, home, fromUri, toUri } from "routes"
 import NotFound from "NotFound"
 import * as Home from "Home"
 import * as NextPage from "NextPage"
-import { load, Goto, GotoType } from "frame"
-
+import { React, load, Goto, GotoType, Dispatcher } from "reactive-elm"
 
 // STATE
 
 export type State = typeof init
 export const init = {
-  route: Route.home as Route.T,
+  route: home as Route,
   home: Home.init,
   nextPage: NextPage.init
 }
 
 // UPDATE
 
-export type Action = Goto<Route.T> | Home.Action | NextPage.Action
+export type Action = Goto<Route> | Home.Action | NextPage.Action
 
 export const update = (state: State = init,
                        action: Action & Dispatcher): State => {
@@ -45,16 +42,16 @@ require("./root.scss")
 
 const Root = ({ route, home, nextPage, dispatch }: State & Dispatcher) => {
   switch (route.type) {
-    case Route.Type.NotFound:
+    case RouteType.NotFound:
       return <NotFound />
-    case Route.Type.Home:
+    case RouteType.Home:
       return <Home.view {...home} dispatch={dispatch} />
-    case Route.Type.NextPage:
+    case RouteType.NextPage:
       return <NextPage.view {...nextPage} dispatch={dispatch} />
   }
 }
 
-load<State, Action, Route.T>(Root, update, Route.toUri, Route.fromUri)
+load<State, Action, Route>(Root, update, toUri, fromUri)
 
 // Webpack Hot Module Replacement API
 const mod: Module = module as any as Module

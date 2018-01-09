@@ -1,8 +1,6 @@
-import * as React from "react"
-import { Dispatcher, DispatchComponent } from "helpers"
+import { React, Dispatcher, DispatchComponent, goto } from "reactive-elm"
 import * as Apples from "apples"
-import { nextPage } from "route"
-import { goto } from "frame"
+import { nextPage } from "routes"
 
 // STATE
 
