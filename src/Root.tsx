@@ -1,11 +1,9 @@
 import * as React from "react"
-import { connect } from "react-redux"
-import { Dispatcher, DispatchComponent, Dispatch } from "helpers"
+import { Dispatcher } from "helpers"
 import * as Route from "route"
 import NotFound from "NotFound"
 import * as Home from "Home"
 import * as NextPage from "NextPage"
-import { goto } from "Router"
 import { load, Goto, GotoType } from "frame"
 
 

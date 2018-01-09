@@ -1,5 +1,3 @@
-import { Dispatch } from "helpers"
-
 export type T = NotFound | Home | NextPage
 
 export enum Type {

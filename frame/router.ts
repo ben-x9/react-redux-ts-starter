@@ -1,5 +1,4 @@
 import { Dispatch } from "helpers"
-// import { $uriToRoute, $routeToUri } from "index"
 import createHistory from "history/createBrowserHistory"
 const history = createHistory()
 
@@ -7,7 +6,6 @@ export type UriToRoute<Route> = (uri: string) => Route
 export type RouteToUri<Route> = (route: Route) => string
 
 export const load = <Route>(dispatch: Dispatch,
-                            routeToUri: RouteToUri<Route>,
                             uriToRoute: UriToRoute<Route>) => {
   dispatch(goto(uriToRoute(window.location.pathname), true))
   return history.listen((location, action) => {

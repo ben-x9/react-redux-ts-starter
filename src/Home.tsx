@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Dispatcher, DispatchComponent } from "helpers"
 import * as Apples from "apples"
-import { home, nextPage, toUri, fromUri } from "route"
+import { nextPage } from "route"
 import { goto } from "frame"
 
 // STATE
