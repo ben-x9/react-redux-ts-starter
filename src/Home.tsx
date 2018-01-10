@@ -1,5 +1,5 @@
 import { React, Dispatcher, DispatchComponent, goto } from "reactive-elm"
-import * as Apples from "apples"
+import * as Apples from "Apples"
 import { nextPage } from "routes"
 
 // STATE

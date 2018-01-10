@@ -1,6 +1,7 @@
 const path = require("path");
-var webpack = require("webpack");
-// const CompressionPlugin = require("compression-webpack-plugin");
+const webpack = require("webpack");
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+
 
 function absPath(filePath) {
   return path.join(__dirname, filePath)
@@ -13,10 +14,6 @@ module.exports = {
       absPath("src/Root.tsx")
     ],
   },
-  output: {
-    path: path.join(__dirname, "public"),
-    filename: "[name].js",
-  },
   resolve: {
     modules: [
       path.resolve('./src'),
@@ -27,33 +24,13 @@ module.exports = {
     symlinks: false
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.EnvironmentPlugin({
       "NODE_ENV": "development"
     }),
-    new webpack.NamedModulesPlugin(),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   mangle: true,
-    //   compress: {
-    //     warnings: false,
-    //     pure_getters: true,
-    //     unsafe: true,
-    //     unsafe_comps: true,
-    //     screw_ie8: true
-    //   },
-    //   output: {
-    //     comments: false,
-    //   },
-    //   exclude: [/\.min\.js$/gi]
-    // }),
-    // new CompressionPlugin({
-    //   asset: "public/bundle.js",
-    //   algorithm: "gzip",
-    //   test: /\.js$|\.css$|\.html$/,
-    //   threshold: 10240,
-    //   minRatio: 0
-    // })
+    new CaseSensitivePathsPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin()
   ],
   devtool: "cheap-module-eval-source-map",
   devServer: {
