@@ -19,21 +19,13 @@ export type Action = Goto<Route> | Home.Action | NextPage.Action
 
 export const update = (state: State = init,
                        action: Action & Dispatcher): State => {
-  switch (action.type) {
-    case GotoType:
-      return { ...state, route: action.route }
-    default:
-      const home = Home.update(state.home, action as Home.Action & Dispatcher)
-      if (home !== state.home) return { ...state, home }
-
-      const nextPage = NextPage.update(
-        state.nextPage,
-        action as NextPage.Action
-      )
-      if (nextPage !== state.nextPage) return { ...state, nextPage }
-
-      return state
+  if (Home.reactsTo(action)) {
+    return { ...state, home: Home.update(state.home, action) }
   }
+  if (NextPage.reactsTo(action)) {
+    return { ...state, nextPage: NextPage.update(state.nextPage, action) }
+  }
+  return state
 }
 
 // VIEW

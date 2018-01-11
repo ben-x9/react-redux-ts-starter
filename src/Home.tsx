@@ -1,4 +1,4 @@
-import { React, Dispatcher, DispatchComponent, goto } from "reactive-elm"
+import { React, Dispatcher, DispatchComponent, goto, AnyAction } from "reactive-elm"
 import * as Apples from "Apples"
 import { nextPage } from "routes"
 
@@ -23,6 +23,16 @@ export type Action =
 export enum ActionType {
   Increment = "Increment",
   IncrementAgain = "IncrementAgain"
+}
+
+export const reactsTo = (action: AnyAction): action is Action => {
+  switch (action.type) {
+    case ActionType.Increment:
+    case ActionType.IncrementAgain:
+      return true
+    default:
+      return Apples.reactsTo(action)
+  }
 }
 
 interface Increment {
@@ -52,8 +62,8 @@ export const update = (state: State = init, action: Action & Dispatcher): State 
     case ActionType.IncrementAgain:
       return { ...state, countAgain: state.countAgain + action.by }
     default:
-      const apples = Apples.update(state.apples, action)
-      if (apples !== state.apples) return { ...state, apples }
+      if (Apples.reactsTo(action))
+        state = { ...state, apples: Apples.update(state.apples, action) }
       return state
   }
 }

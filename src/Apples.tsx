@@ -1,4 +1,4 @@
-import { React, Dispatcher } from "reactive-elm"
+import { React, Dispatcher, AnyAction } from "reactive-elm"
 import moize from "moize"
 
 // STATE
@@ -10,25 +10,32 @@ export type State = typeof init
 
 // UPDATE
 
-enum Type {
+type Action = AddApple
+
+enum ActionType {
   AddApple = "AddApple"
 }
 
-type Action = AddApple
+export const reactsTo = (action: AnyAction): action is Action => {
+  switch (action.type) {
+    case ActionType.AddApple:
+      return true
+    default:
+      return false
+  }
+}
 
 interface AddApple {
-  type: Type.AddApple
+  type: ActionType.AddApple
 }
 const addApple = (): AddApple => ({
-  type: Type.AddApple
+  type: ActionType.AddApple
 })
 
 export const update = (state: State, action: Action): State => {
   switch (action.type) {
-    case Type.AddApple:
+    case ActionType.AddApple:
       return { ...state, numApples: state.numApples + 1 }
-    default:
-      return state
   }
 }
 

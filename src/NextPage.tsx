@@ -1,4 +1,4 @@
-import { React, Dispatcher } from "reactive-elm"
+import { React, Dispatcher, AnyAction } from "reactive-elm"
 import moize from "moize"
 
 // STATE
@@ -12,16 +12,25 @@ export const init = {
 
 export type Action = Toggle
 
-enum Type {
+export enum ActionType {
   Toggle = "Toggle"
 }
 
-interface Toggle { type: Type.Toggle }
-const toggle: Toggle = ({ type: Type.Toggle })
+export const reactsTo = (action: AnyAction): action is Action => {
+  switch (action.type) {
+    case ActionType.Toggle:
+      return true
+    default:
+      return false
+  }
+}
+
+interface Toggle { type: ActionType.Toggle }
+const toggle: Toggle = ({ type: ActionType.Toggle })
 
 export const update = (state: State, action: Action) => {
   switch (action.type) {
-    case Type.Toggle: return { ...state, lightOn: !state.lightOn }
+    case ActionType.Toggle: return { ...state, lightOn: !state.lightOn }
     default: return state
   }
 }
