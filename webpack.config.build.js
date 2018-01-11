@@ -5,7 +5,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {...config,
   entry: {
-    bundle: config.entry.bundle.slice(1) // remove "react-hot-loader/patch"
+    bundle: config.entry.filter(it => it !== "react-hot-loader/patch")
   },
   output: {
     path: path.join(__dirname, "public"),
@@ -37,5 +37,14 @@ module.exports = {...config,
       threshold: 10240,
       minRatio: 0
     })
-  ]
+  ],
+  module: {
+    rules: [
+      ...config.module.rules.filter(rule => rule.loader !== "ts-loader"),
+      {
+        ...config.module.rules.find(rule => rule.loader === "ts-loader"),
+        options: { transpileOnly: false }
+      }
+    ]
+  }
 };
