@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 
 
 function absPath(filePath) {
@@ -11,13 +11,13 @@ module.exports = {
   entry: {
     bundle: [
       "react-hot-loader/patch",
-      absPath("src/Root.tsx")
+      absPath("src/index.ts")
     ],
   },
   resolve: {
     modules: [
-      path.resolve('./src'),
-      path.resolve('.'),
+      path.resolve("./src"),
+      path.resolve("."),
       "node_modules"
     ],
     extensions: [".js", ".ts", ".jsx", ".tsx"],

@@ -41,10 +41,6 @@
       ]
     }
   },
-  "include": [
-    "src/**/*",
-    "typings/**/*"
-  ],
   "exclude": [
     "node_modules/**/*"
   ],
@@ -68,5 +64,8 @@
     "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
     "placeOpenBraceOnNewLineForFunctions": false,
     "placeOpenBraceOnNewLineForControlBlocks": false
-  }
+  },
+  "typeRoots": [
+    "../node_modules/@types"
+  ]
 }

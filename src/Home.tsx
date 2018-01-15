@@ -12,7 +12,7 @@ export interface State {
 export const init = {
   count: 0,
   countAgain: 0,
-  apples: Apples.init
+  apples: Apples.initialState
 }
 
 // UPDATE

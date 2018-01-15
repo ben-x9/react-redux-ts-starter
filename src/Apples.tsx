@@ -3,10 +3,10 @@ import moize from "moize"
 
 // STATE
 
-export const init = {
+export const initialState = {
   numApples: 0
 }
-export type State = typeof init
+export type State = typeof initialState
 
 // UPDATE
 
@@ -28,7 +28,7 @@ export const reactsTo = (action: AnyAction): action is Action => {
 interface AddApple {
   type: ActionType.AddApple
 }
-const addApple = (): AddApple => ({
+export const addApple = (): AddApple => ({
   type: ActionType.AddApple
 })
 

@@ -2,7 +2,7 @@ import { Route, RouteType, home, fromUri, toUri } from "routes"
 import NotFound from "NotFound"
 import * as Home from "Home"
 import * as NextPage from "NextPage"
-import { React, load, Goto, GotoType, Dispatcher } from "reactive-elm"
+import { React, load, Goto, Dispatcher } from "reactive-elm"
 
 // STATE
 
@@ -43,10 +43,4 @@ const Root = ({ route, home, nextPage, dispatch }: State & Dispatcher) => {
   }
 }
 
-load<State, Action, Route>(Root, update, toUri, fromUri)
-
-// Webpack Hot Module Replacement API
-const mod: Module = module as any as Module
-if (mod.hot) {
-  mod.hot.accept()
-}
+export const view  = Root
